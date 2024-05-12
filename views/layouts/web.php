@@ -7,7 +7,7 @@
         <title>SINGED-SHOP</title>
         <link rel="stylesheet"  href="./assets/css/header.css">
         <link rel="stylesheet"  href="./assets/css/footer.css">
-        <script src="./assets/JavaScript/header.js"></script>
+        
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -154,7 +154,7 @@
                 </div>
             </div>
 
-    
+            <script src="./assets/JavaScript/header.js"></script>
     <script type="text/javascript">
         var searchInput = document.getElementsByClassName('search-box')[0];
         var searchButton = document.getElementsByClassName('fa-magnifying-glass')[0];
@@ -173,6 +173,7 @@
             window.location.assign("http://localhost:8008/PHP/index.php?controller=pages&action=search&keysearch="+ searchInput.value+"&page=1");
         }
 	</script>
+    
     
 
     </body>

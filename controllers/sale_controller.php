@@ -14,10 +14,10 @@ class SaleController extends BaseController
 
     public function sale() // Thay đổi tên hàm
     { 
-      if (!isset($_SESSION['user_id'])) {
-        header("Location: http://localhost:8008/PHP/index.php?controller=login&action=login");
-        exit; // Kết thúc chương trình sau khi chuyển hướng
-    }
+    //   if (!isset($_SESSION['user_id'])) {
+    //     header("Location: http://localhost:8008/PHP/index.php?controller=login&action=login");
+    //     exit; // Kết thúc chương trình sau khi chuyển hướng
+    // }
   
         $page = isset($_GET['page']) ? $_GET['page'] : 1;
         $limit = 8; // Số bài viết hiển thị trên mỗi trang

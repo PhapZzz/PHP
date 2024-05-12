@@ -10,7 +10,7 @@
             <h2 id="title_register">Đăng ký</h2>
             <!-- Form đăng ký -->
             <div id="register_form">
-                <input id="phone_number" name="phone_number" type="number" placeholder="Số điện thoại" required>
+                <input id="phone_number" name="phone_number" type="text" placeholder="Số điện thoại" required>
                 <input id="name" name="name" type="text" placeholder="Tên" required>
                 <input id="passwd" name="password" type="password" placeholder="Mật khẩu" required>
                 <input id="re_passwd" name="re_passwd" type="password" placeholder="Nhập lại mật khẩu" required>
@@ -31,9 +31,10 @@
         var name = $("#name").val();
         var password = $("#passwd").val();
         var rePassword = $("#re_passwd").val();
+        var regex = /^0\d{9}$/;
 
         // Kiểm tra số điện thoại có phải là 10 số không
-        if (phoneNumber.length !== 10) {
+        if (!regex.test(phoneNumber)) {
             alert("Số điện thoại không hợp lệ! Vui lòng nhập lại.");
             return;
         }
@@ -64,10 +65,8 @@
                 alert("Đăng ký thành công!");
                 window.location.href = "http://localhost:8008/PHP/index.php?controller=login&action=login";
                 // Redirect hoặc thực hiện các hành động khác
-            } else if (data == "existAccount") {
-                // Tài khoản đã tồn tại
-                alert("Tài khoản đã tồn tại!");
-            }else {
+            }
+            else {
                 // Xử lý các trường hợp khác
                 alert("Đã xảy ra lỗi. Vui lòng thử lại sau.");
             }

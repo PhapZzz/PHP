@@ -59,7 +59,8 @@
                                     <td><a class="input-cell" type="text" ><?php echo $product->getPrice(); ?></a></td>
                                     <td><a class="input-cell" type="text" ><?php echo $product->getOldPrice(); ?></a></td>
                                     <td><a class="input-cell" type="text" ><?php echo $product->getIdStyle(); ?></a></td>
-                                    <td><a class="input-cell" type="text" ><?php echo $product->getidCategory(); ?></a></td>
+                                    <td><a class="input-cell" type="text" ><?php
+                                    echo $product->getidCategory(); ?></a></td>
                                     <td><textarea class="input-cell" class="describe_edit" name="describe"><?php echo $product->getDescribe(); ?></textarea></td>
                                     <td><a class="input-cell" type="text"><?php echo $product->getPurchase(); ?></a></td>
                                     <td><a class="input-cell" type="text"><?php echo $product->getCreateDate(); ?></a></td>

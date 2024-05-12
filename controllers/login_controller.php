@@ -49,6 +49,9 @@ public function loginAuthentication()
                 exit(json_encode($status));
             }
         }
+        else{
+            $status = "nonuser";
+            exit(json_encode($status));}
     }
 }
 

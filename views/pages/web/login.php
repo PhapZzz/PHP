@@ -57,7 +57,8 @@ $(document).ready(function(){
                alert("Đăng nhập thành công!");
                window.location.href = "http://localhost:8008/PHP/index.php";
             }
-            else alert("Đăng nhập thất bại");
+            // if(data = "nonuser"){alert("SDT không đúng hoặc không tồn tại");}
+            else alert("SĐT hoặc mật khẩu không đúng");
         }
         );
     });

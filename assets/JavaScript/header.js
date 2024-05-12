@@ -21,6 +21,8 @@ function showMenu() {
 function closeMenu() {
 	tagMenu.classList.remove('open')
 }
+openMenu.addEventListener('click', showMenu)
+btnClose.addEventListener('click', closeMenu)
 
 // ////// bắt sự kiện thẻ lọc danh sách sản phẩm
 // var listItems = document.getElementsByClassName('tab_list_menu');
