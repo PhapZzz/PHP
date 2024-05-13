@@ -13,9 +13,13 @@
 			
 			<?php endif; ?>
 
-			<h1 id="title_sale"></h1>
+			<!-- <h1 id="title_sale"></h1> -->
 
 		</div>
+
+		<?php if($title =='TOP BÁN CHẠY' || $title =='SẢN PHẨM MỚI' ):?>
+			<h1 id="title_sale"></h1>
+			<?php else: ?>
 		<div id="menu_search">
 			<div class="range_slider_div">
 				<h3 id="title_price">Khoảng giá: <span id="value_price1"></span></h3>
@@ -40,6 +44,9 @@
 			<button id="sort">Lọc</button>
 
 		</div>
+		<?php endif; ?>
+
+
 
 		<div id="list_product_sale">
 			<?php foreach ($viewAllProduct['viewAllProduct'] as $item): ?>
