@@ -404,3 +404,7 @@ footer {
 .checkbox_idProduct{
 	font-size: 16px;
 }
+
+.thongkeloai{
+	display: flex;
+}

@@ -64,6 +64,17 @@ class PayController extends BaseController
                 billDetail::addBillDetail($billDetail);
             }
 
+            // tăng lượt mua khi người dùng ấn thanh toán
+            foreach ($cart['itemCart'] as $item){
+                $idproduct = $item->getProduct()->getIdProduct();
+                $quantity = $item->getQuantity();
+                product::increasePurchases($idproduct,$quantity);
+
+            }
+
+
+
+
             // Sau khi xử lý đơn hàng thành công, redirect lại trang giỏ hàng và xóa toàn bộ giỏ hàng
             header("Location: http://localhost:8008/PHP/index.php?controller=cart&action=deleteAllCart&pay=true");
             exit();

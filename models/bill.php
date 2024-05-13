@@ -181,5 +181,49 @@ class bill {
         return $idNewBill;
       }
 
+
+      public static function getcountpurchasesforallcategory($start_date,$end_date){
+        $list = [];
+        $db = DB::getInstance();
+        $sql = " SELECT billdetail.idCategory,category.nameCategory, SUM(billdetail.quanty) AS purchases
+        FROM bill
+        INNER JOIN billdetail ON billdetail.idBill = bill.idBill JOIN category on category.idCategory = billdetail.idCategory
+        WHERE bill.orderDate BETWEEN '$start_date' AND '$end_date'
+        GROUP BY billdetail.idCategory,category.nameCategory;";
+        $req = $db->query($sql);
+    
+        foreach ($req->fetchAll() as $item) {
+            $list[] = [
+            // 'idCategory' => $item['idCategory'],
+            'purchases' => $item['purchases'],
+            'nameCategory'=>$item['nameCategory'],
+                
+            ];
+        }
+        return $list;
+    }
+
+
+    public static function getcountpurchasesforallproduct($start_date,$end_date){
+        $list = [];
+        $db = DB::getInstance();
+        $sql = " SELECT billdetail.idProduct,product.nameProduct, SUM(billdetail.quanty) AS purchases
+        FROM bill
+        INNER JOIN billdetail ON billdetail.idBill = bill.idBill JOIN product on billdetail.idProduct=product.idProduct
+        WHERE bill.orderDate BETWEEN '$start_date' AND '$end_date'
+        GROUP BY billdetail.idProduct,product.nameProduct;";
+        $req = $db->query($sql);
+    
+        foreach ($req->fetchAll() as $item) {
+            $list[] = [
+            // 'idCategory' => $item['idCategory'],
+            'nameProduct'=>$item['nameProduct'],
+            'purchases' => $item['purchases']
+                
+            ];
+        }
+        return $list;
+    }
+
 }
 ?>

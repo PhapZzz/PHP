@@ -125,6 +125,38 @@ class  billDetail{
         $stmt->closeCursor();
         return $rowCount;
     }    
+
+    public static function getALLBillDetail() {
+        $db = DB::getInstance();
+        // Chuẩn bị truy vấn SQL
+        $sql = "SELECT * FROM BillDetail ";
+        $stmt = $db->query($sql);
+        // Bind tham số và thực thi truy vấn
+        
+        // Lấy kết quả
+        $result = $stmt->fetchAll();
+
+        // Khởi tạo mảng chứa các đối tượng BillDetail
+        $billDetails = [];
+        // Duyệt qua kết quả và ánh xạ vào các đối tượng BillDetail
+        foreach ($result as $row) {
+            $billDetail = new billDetail(
+                $row['idBillDetail'],
+                $row['quanty'],
+                $row['totalPrice'],
+                $row['idProduct'],
+                $row['nameProduct'],
+                $row['idCategory'],
+                $row['idBill'],
+                $row['image']
+            );
+            // Thêm BillDetail vào mảng
+            $billDetails[] = $billDetail;
+        }
+        // Trả về danh sách BillDetail
+        return $billDetails;
+    }
+
     
 }
 ?>

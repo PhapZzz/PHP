@@ -165,16 +165,57 @@ public function deleteProduct()
   }
 } 
 
+
+
 public function dashBoard()
 {   
   if (!isset($_SESSION['user_id']) && $_SESSION['role']->getIdRole() == 2) {
       header("Location: http://localhost:8008/PHP/index.php?controller=login&action=login");
     exit; 
   }
+
+  if(isset($_POST['start_date']) && isset($_POST['end_date'])){
+    $start_date = $_POST['start_date'];
+    $end_date = $_POST['end_date'];
+  }
+  else{
+    $start_date = '2022-01-01';
+    $end_date = '2050-12-31';
+  }
   $layout = 'admin';
-  $data= array();
-  $this->render('dashBoard', $data,$layout); 
+  $purchase = bill::getcountpurchasesforallcategory($start_date,$end_date);
+  $datapurchase = array('datapurchase'=>$purchase);
+
+  $title = category::getCategory();
+  $datatitle = array('datatitle'=> $title); //ham nay khong sài nữa, nhưng mà cứ để vì không ảnh hưởng, chủ yếu để học
+
+  $idproduct = billDetail::getALLBillDetail();
+  $idProducts = [];
+  
+  foreach ($idproduct as $product) {
+    $idProducts[] = $product->getIdProduct();
 }
+  
+  $nameProduct = product::findByIdProduct($idProducts);
+  $datanameProduct = array('datanameproduct'=>$nameProduct); // ham nay khong sài nữa, nhưng mà cứ để vì không ảnh hưởng, chủ yếu để học
+
+
+
+  $purchase_product = bill::getcountpurchasesforallproduct($start_date,$end_date);
+  $datapurchase_product = array('datapurchase_product'=>$purchase_product);
+
+
+  $data= array(
+    'datatitle' => $datatitle,
+    'datapurchase'=>$datapurchase,
+    // 'datanameproduct'=>$datanameProduct ,
+    'datapurchase_product'=>$datapurchase_product,
+    
+  );
+  $this->render_test('dashBoard', $data,$layout); 
+}
+
+
 
 public function billAdminPage()
 {   
@@ -270,4 +311,5 @@ public function updateRoleUser()
   {
     $this->render('error', null , null);
   }
+
 }

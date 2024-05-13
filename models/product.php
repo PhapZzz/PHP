@@ -192,6 +192,8 @@ class product {
         return $list;
     }
 
+
+
     public static function getODERAllProduct($title, $oder){
         
         $list = [];
@@ -217,15 +219,47 @@ class product {
         return $list;
     }
 	
-    public static function findByIdProduct($idProduct){
-        $db = DB::getInstance();
-        $sql = "SELECT idProduct, nameProduct, quantity, price, oldPrice, `describe`, idStyle, `image`, purchases, idCategory, CreatedDate FROM product WHERE idProduct = ?";
-        $stmt = $db->prepare($sql);
-        $stmt->execute([$idProduct]);
-        $item = $stmt->fetch();
+    // public static function findByIdProduct($idProduct){
+    //     $db = DB::getInstance();
+    //     $sql = "SELECT idProduct, nameProduct, quantity, price, oldPrice, `describe`, idStyle, `image`, purchases, idCategory, CreatedDate FROM product WHERE idProduct = ?";
+    //     $stmt = $db->prepare($sql);
+    //     $stmt->execute([$idProduct]);
+    //     $item = $stmt->fetch();
     
-        if ($item) {
-            return new product(
+    //     if ($item) {
+    //         return new product(
+    //             $item['idProduct'],
+    //             $item['nameProduct'],
+    //             $item['quantity'],
+    //             $item['price'],
+    //             $item['oldPrice'],
+    //             $item['describe'],
+    //             $item['idStyle'],
+    //             $item['image'],
+    //             $item['purchases'],
+    //             $item['idCategory'],
+    //             $item['CreatedDate']
+    //         );
+    //     } else {
+    //         return null; // Trả về null nếu không tìm thấy sản phẩm
+    //     }
+    // }   
+
+    public static function findByIdProduct($idProducts){
+        $db = DB::getInstance();
+        // nếu ko phải 1 mảng thì Chuyển đổi idProduct thành một mảng gồm một phần tử
+        if (!is_array($idProducts)) {
+            $idProducts = [$idProducts];
+        }
+        $placeholders = rtrim(str_repeat('?, ', count($idProducts)), ', '); // Tạo chuỗi ? tương ứng với số lượng phần tử trong mảng idProducts
+        $sql = "SELECT idProduct, nameProduct, quantity, price, oldPrice, `describe`, idStyle, `image`, purchases, idCategory, CreatedDate FROM product WHERE idProduct IN ($placeholders)";
+        $stmt = $db->prepare($sql);
+        $stmt->execute($idProducts); // Truyền mảng idProducts vào execute
+        $items = $stmt->fetchAll();
+    
+        $products = [];
+        foreach ($items as $item) {
+            $products[] = new Product(
                 $item['idProduct'],
                 $item['nameProduct'],
                 $item['quantity'],
@@ -238,10 +272,9 @@ class product {
                 $item['idCategory'],
                 $item['CreatedDate']
             );
-        } else {
-            return null; // Trả về null nếu không tìm thấy sản phẩm
         }
-    }   
+        return $products;
+    }
     
     public static function search($keySearch,$idcaregory,$price_max,$limit,$offset){
         $db = DB::getInstance();
@@ -277,6 +310,25 @@ class product {
         return $result;
     }
 
+    public static function getcountpurchasesforallcategory(){
+        $list = [];
+        $db = DB::getInstance();
+        $sql = " SELECT idCategory, COUNT(*) AS purchases
+        FROM product
+        GROUP BY idCategory";
+        $req = $db->query($sql);
+    
+        foreach ($req->fetchAll() as $item) {
+            $list[] = [
+            // 'idCategory' => $item['idCategory'],
+            'purchases' => $item['purchases']
+                
+            ];
+        }
+        return $list;
+    }
+
+
     public static function countAfroduct($keySearch,$idcategory,$price_max)
     {
         $db = DB::getInstance();
@@ -295,4 +347,32 @@ class product {
         return $count;
     }
     
+
+// ham tang lượt bán
+    public static function increasePurchases($idProduct, $quantity) {
+        // Kết nối đến cơ sở dữ liệu
+        $db = DB::getInstance();
+    
+        try {
+            // Bắt đầu một giao dịch để đảm bảo tính toàn vẹn của dữ liệu
+            $db->beginTransaction();
+    
+            // Truy vấn để tăng lượt mua cho sản phẩm có id là $idProduct
+            $sql = "UPDATE product SET purchases = purchases + :quantity WHERE idProduct = :idProduct";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);   // là giá trị được ràng buộc. PDO::PARAM_INT chỉ định kiểu dữ liệu của tham số là một số nguyên, điều này giúp PDO biết cách xử lý giá trị khi thực thi truy vấn SQL.
+            $stmt->bindParam(':idProduct', $idProduct, PDO::PARAM_INT);
+            $stmt->execute();
+    
+            // Commit giao dịch
+            $db->commit();
+    
+            // Trả về true nếu tăng lượt mua thành công
+            return true;
+        } catch (PDOException $e) {
+            // Nếu có lỗi, rollback giao dịch và trả về false
+            $db->rollBack();
+            return false;
+        }
+    }
 }

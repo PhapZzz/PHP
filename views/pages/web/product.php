@@ -46,10 +46,15 @@
                             <h3 id="quantity">Số lượng:</h3>
                             <input type="number" id="quantity_input" min="1" value="1">
                         </div>
+                        <div id="quantity_product">
+                            <h5 style="color: white;">Số lượt bán: <?php echo $detailProduct->getPurchase(); ?> </h5>
+                            
+                        </div>
                         <div id="btn">
                             <button id="btn_add_cart">Thêm vào giỏ <i class="fa-solid fa-cart-shopping"></i></button>
                             <button id="btn_buy">Mua ngay</button>
                         </div>
+                        
 
     <script>
         document.getElementById("btn_add_cart").addEventListener("click", function(event) {
